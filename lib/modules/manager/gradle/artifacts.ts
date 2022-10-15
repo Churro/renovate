@@ -20,6 +20,7 @@ import {
   gradleWrapperFileName,
 } from '../gradle-wrapper/utils';
 import type { UpdateArtifact, UpdateArtifactsResult } from '../types';
+import { isGradleBuildFile } from './utils';
 
 async function getUpdatedLockfiles(
   oldLockFileContentMap: Record<string, string | null>
@@ -86,6 +87,11 @@ export async function updateArtifacts({
   config,
 }: UpdateArtifact): Promise<UpdateArtifactsResult[] | null> {
   logger.debug(`gradle.updateArtifacts(${packageFileName})`);
+
+  if (config.isLockFileMaintenance && !isGradleBuildFile(packageFileName)) {
+    logger.trace('No build.gradle(.kts) file - skipping lock file maintenance');
+    return null;
+  }
 
   const fileList = await getFileList();
   const lockFiles = fileList.filter((file) => file.endsWith('.lockfile'));
