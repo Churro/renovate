@@ -423,6 +423,7 @@ export async function findPr({
         {
           paginate: true,
           limit: 1, // only fetch the latest pr
+          maxPages: 1,
         },
       )
     ).body;
