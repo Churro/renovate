@@ -134,6 +134,7 @@ export interface LookupUpdate {
 export interface PackageDependency<
   T = Record<string, any>,
 > extends ManagerData<T> {
+  allowedVersions?: string;
   currentValue?: string | null;
   currentDigest?: string;
   depName?: string;
